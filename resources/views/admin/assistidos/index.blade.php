@@ -5,7 +5,7 @@
 @section('title', 'Dashboard')
 
 @section('content_header')
-    <h1>Bem vindo {{ auth()->user()->name }}</h1>
+    <h1>Listando Assistidos Cadastrados:</h1>
 @stop
 
 @section('content')
@@ -13,21 +13,23 @@
     <div class="row">
         <div class="col-12">
             <div class="card">
-                <div class="card-header">
-                    <h3 class="card-title">Lista de Assistidos</h3>
+                <div class="card-header ">
+                    <a class="btn btn-primary" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+                        Filtros
+                    </a>
+                    <div class="collapse" id="collapseExample">
+                        <div class="card-tools">
+                            <form action="{{ route("assistidos.search")  }}" method="POST" class="form">
+                                @csrf
+                                <label>Faixa de Renda:</label><br>
+                                <input type="text" class="form-control mr-1" name="renda_ini" value="{{ old('renda_ini') }}" placeholder="Renda Inicial">
+                                <input type="text" class="form-control mr-1" name="renda_fin" value="{{ old('renda_fin') }}" placeholder="Renda Final">
+                                <label>Nome:</label><br>
+                                <input type="text" class="form-control mr-1" name="nome" value="{{ old('nome') }}" placeholder="Nome">
 
-                    <div class="card-tools">
-
-                            <form action="/assistidos/{search}" method="GET">
-                                <div class="input-group input-group-sm" style="width: 150px;">
-                                {{csrf_field()}}
-                                <input type="text" name="s" class="form-control float-right" placeholder="Procurar">
-                                <div class="input-group-append">
-                                    <button type="submit" class="btn btn-default"><i class="fas fa-search"></i></button>
-                                </div>
-                                </div>
+                                <input type="submit" value="PESQUISAR">
                             </form>
-
+                        </div>
                     </div>
                 </div>
                 <!-- /.card-header -->
@@ -38,9 +40,10 @@
                             <th>ID</th>
                             <th>NOME</th>
                             <th>EMAIL</th>
+                            <th>CEL1</th>
                             <th>CPF</th>
-                            <th>CADASTRO</th>
-                            <th>POR</th>
+                            <th>RENDA</th>
+                            <th>CRIADO</th>
                             <th>OPÇÔES</th>
                         </tr>
                         </thead>
@@ -49,25 +52,32 @@
                             <tr>
                                 <td>{{ $assistido->id  }}</td>
                                 <td>{{ $assistido->nome  }}</td>
-                                <td>{{ $assistido->email ?? "dcdouglas64@gmail.com" }}</td>
+                                <td>{{ $assistido->email ?? "Não informado/Não há" }}</td>
+                                <td>{{ $assistido->cel1 ?? "Não informado/Não há" }}</td>
                                 <td>{{ $assistido->cpf  }}</td>
+                                <td>R$ {{ number_format($assistido->renda_familiar_total,2)  }}</td>
                                 <td>{{ $assistido->created_at->format("d/m/Y")  }}</td>
-                                <td>Alciléia</td>
                                 <td>
-                                    <button type="button" class="btn btn-primary"><i class="far fa-eye"></i></button>
+                                    <a href="{{ route("assistidos.show",["id" => $assistido->id]) }}"><button type="button" class="btn btn-primary"><i class="far fa-eye"></i></button></a>
                                     <button type="button" class="btn btn-success"><i class="fas fa-edit"></i></button>
                                     <button type="button" class="btn btn-danger"><i class="far fa-trash-alt"></i></button>
                                 </td>
                             </tr>
                         @empty
-                            <p>No users</p>
+                        <tr>
+                            <td colspan="7">Nenhum Assistido Localizado</td>
+                        </tr>
                         @endforelse
                         </tbody>
 
                     </table>
                     <div class="card-footer clearfix">
                         <div class="float-right">
-                            {{ $assistidos->links() }}
+                            @if(isset($data))
+                                {{ $assistidos->appends($data)->links() }}
+                            @else
+                                {{ $assistidos->links() }}
+                            @endif
                         </div>
                     </div>
                 </div>

@@ -9,7 +9,7 @@
 @stop
 
 @section('content')
-    <p>Welcome to this beautiful admin panel.</p>
+    <p>Painel Administrativo</p>
 @stop
 
 @section('css')
@@ -19,3 +19,4 @@
 @section('js')
     <script> console.log('Hi!'); </script>
 @stop
+

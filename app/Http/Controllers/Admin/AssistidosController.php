@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Admin\Assistido;
 use Illuminate\Http\Request;
+use App\Models\Admin\Assistido;
 
 class AssistidosController extends Controller
 {
@@ -13,11 +13,11 @@ class AssistidosController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         $assistidos = Assistido::paginate(10);
 
-        return view("admin.assistidos.index",compact("assistidos"));
+        return view("admin.assistidos.index")->with("assistidos",$assistidos);
     }
 
     /**
@@ -27,7 +27,7 @@ class AssistidosController extends Controller
      */
     public function create()
     {
-        //
+        return view("admin.assistidos.create");
     }
 
     /**
@@ -38,7 +38,8 @@ class AssistidosController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->_validation($request);
+        //dd($request->except(["submit","_token"]));
     }
 
     /**
@@ -49,7 +50,8 @@ class AssistidosController extends Controller
      */
     public function show($id)
     {
-        //
+        $assistido = Assistido::find($id);
+        return view("admin.assistidos.show")->with(["assistido" => $assistido]);
     }
 
     /**
@@ -86,8 +88,51 @@ class AssistidosController extends Controller
         //
     }
 
-    public function search(Request $request){
-        dd($request->get("s"));
-        exit;
+    public function search(Request $request,Assistido $assistido){
+
+        $data = $request->except("_token");
+        $assistidos = $assistido->search($data);
+
+        return view("admin.assistidos.index",compact("data","assistidos"));
+
     }
+
+    protected function _validation(Request $request)
+    {
+        $this->validate($request,[
+            "nome" => "required|min:3",
+            "email" => "required|email",
+            "cpf"   => "required|cpf",
+            "rg"    => "required|digits_between:9,9"
+        ]);
+        /*
+         * "nome" => null
+  "email" => null
+  "cpf" => null
+  "rg" => null
+  "orgao_emissor" => null
+  "endereco" => null
+  "bairro" => null
+  "cidade" => null
+  "cep" => null
+  "naturalidade" => null
+  "nome_da_mae" => null
+  "nome_do_pai" => null
+  "nome_do_responsavel" => null
+  "nascimento" => null
+  "civil" => null
+  "escolaridade" => null
+  "renda_familiar_total" => null
+  "ocupacao" => null
+  "doenca" => null
+  "beneficio_social" => null
+  "tel1" => null
+  "tel2" => null
+  "cel1" => null
+  "cel2" => null
+  "como_conheceu_projeto" => null
+  "observacao" => null
+         */
+    }
+
 }
