@@ -38,8 +38,8 @@ class AssistidosController extends Controller
      */
     public function store(Request $request)
     {
-        $this->_validation($request);
-        //dd($request->except(["submit","_token"]));
+        $data = $this->_validation($request);
+        Assistido::create($data);
     }
 
     /**
@@ -99,40 +99,37 @@ class AssistidosController extends Controller
 
     protected function _validation(Request $request)
     {
-        $this->validate($request,[
+       return $this->validate($request,[
             "nome" => "required|min:3",
             "email" => "required|email",
             "cpf"   => "required|cpf",
-            "rg"    => "required|digits_between:9,9"
+            "rg"    => "required|digits_between:9,9",
+            "orgao_emissor" => "required",
+            "endereco" => "required",
+            "bairro" => "required",
+            "cidade" => "required",
+            "cep" => "required",
+            "up" => "required",
+            "naturalidade" => "required",
+            "nome_da_mae" => "required",
+            "nome_do_pai" => "required",
+            "nome_do_responsavel" => "required",
+            "nascimento" => "required",
+            "civil" => "required",
+            "escolaridade" => "required",
+            "renda_familiar_total" => "required",
+            "ocupacao" => "required",
+            "doenca" => "required",
+            "beneficio_social" => "required",
+            "tel1" => "required",
+            "tel2" => "required",
+            "cel1" => "required",
+            "cel2" => "required",
+            "como_conheceu_projeto" => "required",
+            "observacao" => "required",
         ]);
-        /*
-         * "nome" => null
-  "email" => null
-  "cpf" => null
-  "rg" => null
-  "orgao_emissor" => null
-  "endereco" => null
-  "bairro" => null
-  "cidade" => null
-  "cep" => null
-  "naturalidade" => null
-  "nome_da_mae" => null
-  "nome_do_pai" => null
-  "nome_do_responsavel" => null
-  "nascimento" => null
-  "civil" => null
-  "escolaridade" => null
-  "renda_familiar_total" => null
-  "ocupacao" => null
-  "doenca" => null
-  "beneficio_social" => null
-  "tel1" => null
-  "tel2" => null
-  "cel1" => null
-  "cel2" => null
-  "como_conheceu_projeto" => null
-  "observacao" => null
-         */
+
+
     }
 
 }

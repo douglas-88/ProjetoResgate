@@ -70,6 +70,10 @@
               <input id="cep" name="cep" placeholder="Informe o CEP" type="text" class="form-control">
           </div>
           <div class="form-group">
+              <label for="uf">UF</label>
+              <input id="uf" name="uf" placeholder="Informe a UF" type="text" class="form-control">
+          </div>
+          <div class="form-group">
               <label for="naturalidade">Naturalidade</label>
               <input id="naturalidade" name="naturalidade" placeholder="Informe a sua Naturalidade, ex: Brasileira ... " type="text" class="form-control">
           </div>

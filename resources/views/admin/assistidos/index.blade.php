@@ -14,6 +14,9 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-header ">
+                    <a class="btn btn-primary float-right" href="{{ route('assistidos.create') }}"  role="button" aria-expanded="false">
+                        Criar Novo
+                    </a>
                     <a class="btn btn-primary" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
                         Filtros
                     </a>
